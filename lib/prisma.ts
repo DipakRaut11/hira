@@ -1,6 +1,4 @@
-//import { PrismaClient } from "../app/generated/prisma/client"; // point to client.ts
-//import { PrismaClient } from "@prisma/client";
-import { PrismaClient } from "../app/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 
 
@@ -16,3 +14,4 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+
