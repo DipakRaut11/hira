@@ -7,8 +7,8 @@ export default function ContactPage() {
       <h1 className="text-4xl font-bold text-center mb-10">Contact Us</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-        {/* <ContactInfo />
-        <ContactForm /> */}
+        <ContactInfo />
+        <ContactForm />
       </div>
     </main>
   );
