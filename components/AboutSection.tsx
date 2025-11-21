@@ -19,14 +19,19 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center px-10 py-20 gap-10 bg-gray-100">
-      <div className="w-1/2 flex justify-center">
-        <img src="/logo.png" alt="Logo" className="w-64 object-contain" />
-      </div>
+    <div className="px-10 py-20 bg-gray-100">
+      <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-10 items-start">
+        {/* Logo */}
+        <div className="flex justify-center md:justify-start">
+          <img src="/logo.png" alt="Logo" className="w-64 object-contain" />
+        </div>
 
-      <div className="w-1/2 text-lg text-gray-700 leading-relaxed">
-        {description || "No description provided yet."}
+        {/* Description */}
+        <div className="text-lg text-gray-700 leading-relaxed">
+          {description || "No description provided yet."}
+        </div>
       </div>
     </div>
   );
 }
+  
