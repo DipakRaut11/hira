@@ -27,6 +27,10 @@ export function AdminSidebar() {
         <Link href="/admin/usersmessages" className="hover:bg-gray-700 p-2 rounded">
           Contact Messages
         </Link>
+
+        <Link href="/admin/projects" className="hover:bg-gray-700 p-2 rounded">
+          Projects
+        </Link>
       </nav>
     </aside>
   );
