@@ -1,7 +1,10 @@
-import React from 'react'
+// app/our-projects/page.tsx
+import ProjectsList from "@/components/ProjectsList";
 
-export default function OurProtfolio() {
+export default function OurProjectsPage() {
   return (
-    <div><h1>Our Projects</h1></div>
-  )
+    <main className="min-h-screen p-6">
+      <ProjectsList />
+    </main>
+  );
 }
