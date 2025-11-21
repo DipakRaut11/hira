@@ -53,7 +53,7 @@ export function Navbar() {
       </nav>
 
       {/* Spacer to match navbar height */}
-      <div className="h-24" />
+      <div className="h-21" />
 
       {/* Optional subtle blue overlay */}
       <div className="fixed top-0 left-0 w-full h-24 pointer-events-none bg-gradient-to-r from-white/0 via-blue-50/20 to-white/0 z-0" />
