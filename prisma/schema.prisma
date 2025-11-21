@@ -1,13 +1,8 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
- output   = "../app/generated/prisma"
+  provider = "prisma-client-js" // v7+ default
+  // remove output line completely
 }
+
 
 datasource db {
   provider = "postgresql"
@@ -21,25 +16,55 @@ model HeroImage {
 }
 
 model CompanyInfo {
-  id          Int     @id @default(1) // single-row table
-  description String  @db.Text
+  id          Int    @id @default(1)
+  description String
 }
 
 model Service {
-  id        Int     @id @default(autoincrement())
-  name      String
-  imageUrl  String
+  id       Int    @id @default(autoincrement())
+  name     String
+  imageUrl String
 }
-
 
 model ContactMessage {
-  id          Int      @id @default(autoincrement())
-  name        String
-  email       String
-  phone       String
-  subject     String
-  message     String
-  createdAt   DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
 }
 
+model Province {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  districts District[]
+  projects Project[]
+}
 
+model District {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  province    Province  @relation(fields: [provinceId], references: [id])
+  provinceId  Int
+  projects    Project[]
+}
+
+model Project {
+  id              Int      @id @default(autoincrement())
+  name            String    
+  client          String
+  provinceId      Int
+  districtId      Int
+  startDate       DateTime
+  completedDate   DateTime?
+  status          String
+  description     String
+  image           String
+  video           String?
+  createdAt       DateTime @default(now())
+
+  province Province @relation(fields: [provinceId], references: [id])
+  district District @relation(fields: [districtId], references: [id])
+}
