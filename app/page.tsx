@@ -10,7 +10,7 @@ export default function Home() {
       <HeroImageCarousel />
          <AboutSection /> 
          <ServiceList />
-         {/* <ContactInfo /> */}
+         <ContactInfo />
 
     </main>
   );
