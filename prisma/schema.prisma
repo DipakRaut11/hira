@@ -68,3 +68,21 @@ model Project {
   province Province @relation(fields: [provinceId], references: [id])
   district District @relation(fields: [districtId], references: [id])
 }
+
+
+model News {
+  id           Int       @id @default(autoincrement())
+  title        String
+  slug         String    @unique
+  description  String
+  content      String?
+  author       String?
+  source       String?
+  imageUrls    String[]                      // Multiple images stored as array
+  isPublished  Boolean   @default(false)
+  publishedAt  DateTime?
+  views        Int       @default(0)
+  likes        Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
