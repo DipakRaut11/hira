@@ -1,7 +1,9 @@
-import React from 'react'
+import NewsEventList from "@/components/NewsEventList";
 
-export default function NewsEvents() {
+export default function NewsPage() {
   return (
-    <div><h1>News & Event</h1></div>
-  )
+    <main className="h-screen">
+      <NewsEventList />
+    </main>
+  );
 }
