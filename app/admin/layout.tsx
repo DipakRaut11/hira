@@ -1,24 +1,22 @@
 "use client";
 
-import { AdminSidebar } from '../../components/AdminSidebar';
-import { useState } from "react";
+import { useState, ReactNode } from "react";
+import { AdminSidebar } from "../../components/AdminSidebar";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+export default function AdminLayout({ children }: { children: ReactNode }) {
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="flex">
-      <AdminSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <AdminSidebar isOpen={isOpen} toggleSidebar={() => setIsOpen(!isOpen)} />
 
-      <div
-        className={`flex-1 transition-all duration-300 mt-24 p-6 ${
-          sidebarOpen ? "ml-64" : "ml-0"
+      <main
+        className={`mt-24 p-6 transition-all duration-300 ${
+          isOpen ? "ml-64" : "ml-0"
         }`}
       >
         {children}
-      </div>
+      </main>
     </div>
   );
 }
