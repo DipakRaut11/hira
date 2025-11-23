@@ -7,8 +7,8 @@ export default function ContactInfo() {
 
       <div className="space-y-4">
         <p>
-          📞 <a href="tel:+9779800000000" className="text-blue-600 hover:underline">
-            +977 9800000000
+          📞 <a href="tel:+9779841175199" className="text-blue-600 hover:underline">
+            +977 9841175199
           </a>
         </p>
 
