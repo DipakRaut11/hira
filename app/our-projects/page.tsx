@@ -3,7 +3,7 @@ import ProjectsList from "@/components/ProjectsList";
 
 export default function OurProjectsPage() {
   return (
-    <main className="min-h-screen p-6">
+    <main className="flex flex-col">
       <ProjectsList />
     </main>
   );

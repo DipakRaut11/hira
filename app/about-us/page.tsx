@@ -4,7 +4,7 @@ import ServiceList from "@/components/ServicesList";
 
 export default function Home() {
   return (
-    <main className="h-screen">
+    <main className="flex flex-col">
       <AboutSection />
       <ServiceList />
     </main>
