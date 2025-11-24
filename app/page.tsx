@@ -2,17 +2,18 @@ import Image from "next/image";
 import HeroImageCarousel from "@/components/HeroImageCarousel";
 import AboutSection from "@/components/AboutSection";
 import ServiceList from "@/components/ServicesList";
-import ContactInfo from "@/components/ContactInfo";
 
 export default function Home() {
   return (
-    <main className="h-screen">
+    // remove h-screen; keep normal flow so page grows with content
+    <main className="flex flex-col">
       <HeroImageCarousel />
-         <AboutSection /> 
-         <ServiceList />
-         <ContactInfo />
 
+      {/* center and constrain width for inner sections */}
+      <div className="max-w-5xl mx-auto px-4 py-12">
+        <AboutSection />
+        <ServiceList />
+      </div>
     </main>
   );
 }
-
