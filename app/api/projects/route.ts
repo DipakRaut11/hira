@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     const status = formData.get("status") as string;
     const description = formData.get("description") as string;
 
-    const imageFile = formData.get("image") as File | null;
+    const imageFile = formData.get("image") as File[] | null;
     const videoFile = formData.get("video") as File | null;
 
     if (!name || !client || !provinceId || !districtId || !startDateStr || !status || !description || !imageFile) {
@@ -65,7 +65,12 @@ export async function POST(request: Request) {
     };
 
     // Save files
-    const imageUrl = await saveFile(imageFile);
+    const imageUrls: string[] = [];
+    for (const file of imageFile) {
+      const url = await saveFile(file);
+      imageUrls.push(url);
+    }
+
     const videoUrl = videoFile ? await saveFile(videoFile) : null;
 
     // Create project in DB
@@ -79,7 +84,7 @@ export async function POST(request: Request) {
         completedDate: completedDateStr ? new Date(completedDateStr) : null,
         status,
         description,
-        image: imageUrl,
+        image: imageUrls,
         video: videoUrl,
       },
     });
