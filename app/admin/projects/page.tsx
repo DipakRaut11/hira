@@ -10,39 +10,42 @@ export default function AdminProjectsPage() {
   const [completedDate, setCompletedDate] = useState("");
   const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState<File | null>(null);
+
+  const [images, setImages] = useState<File[]>([]);
   const [video, setVideo] = useState<File | null>(null);
 
   const [provinces, setProvinces] = useState<any[]>([]);
   const [districts, setDistricts] = useState<any[]>([]);
 
+  // Load provinces
   useEffect(() => {
-    async function loadProvinces() {
-      const res = await fetch("/api/provinces");
-      const data = await res.json();
-      setProvinces(data);
-    }
-    loadProvinces();
+    fetch("/api/provinces")
+      .then(res => res.json())
+      .then(setProvinces);
   }, []);
 
+  // Load districts when province changes
   useEffect(() => {
     if (!provinceId) {
       setDistricts([]);
       setDistrictId("");
       return;
     }
-    async function loadDistricts() {
-      const res = await fetch(`/api/districts/${provinceId}`);
-      const data = await res.json();
-      setDistricts(data);
-    }
-    loadDistricts();
+    fetch(`/api/districts/${provinceId}`)
+      .then(res => res.json())
+      .then(setDistricts);
   }, [provinceId]);
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    setImages(Array.from(e.target.files));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !client || !provinceId || !districtId || !startDate || !status || !description || !image)
+    if (!name || !client || !provinceId || !districtId || !startDate || !status || !description || images.length === 0) {
       return alert("Please fill all required fields");
+    }
 
     const formData = new FormData();
     formData.append("name", name);
@@ -53,152 +56,121 @@ export default function AdminProjectsPage() {
     formData.append("completedDate", completedDate);
     formData.append("status", status);
     formData.append("description", description);
-    formData.append("image", image);
+
+    images.forEach(file => formData.append("images", file));
     if (video) formData.append("video", video);
 
-    const res = await fetch("/api/projects", { method: "POST", body: formData });
+    const res = await fetch("/api/projects", {
+      method: "POST",
+      body: formData,
+    });
 
     if (res.ok) {
       alert("Project Added Successfully!");
       setName(""); setClient(""); setProvinceId(""); setDistrictId("");
       setStartDate(""); setCompletedDate(""); setStatus(""); setDescription("");
-      setImage(null); setVideo(null);
+      setImages([]); setVideo(null);
     } else {
       alert("Error: Failed to add project.");
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <form onSubmit={handleSubmit} className="w-full max-w-xl p-6 space-y-4 bg-gray-900 rounded shadow-md">
-        <h1 className="text-2xl font-bold text-center text-white mb-6">Add New Project</h1>
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6">
+      <form onSubmit={handleSubmit} className="w-full max-w-xl p-6 space-y-4 bg-white rounded-xl shadow-lg border border-gray-200">
+        <h1 className="text-2xl font-bold text-center text-slate-800 mb-6">Add New Project</h1>
 
-        {/** Project Name */}
-        <div>
-          <label className="text-white font-semibold mb-1 block">Project Name</label>
-          <input
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
-            placeholder="Enter project name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+        <Input label="Project Name" value={name} onChange={setName} />
+        <Input label="Client Name" value={client} onChange={setClient} />
 
-        {/** Client Name */}
-        <div>
-          <label className="text-white font-semibold mb-1 block">Client Name</label>
-          <input
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
-            placeholder="Enter client name"
-            value={client}
-            onChange={(e) => setClient(e.target.value)}
-          />
-        </div>
+        <Dropdown label="Province" options={provinces} value={provinceId} onChange={setProvinceId} />
+        <Dropdown label="District" options={districts} value={districtId} onChange={setDistrictId} disabled={!provinceId} />
 
-        {/** Province */}
-        <div>
-          <label className="text-white font-semibold mb-1 block">Province</label>
-          <select
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
-            value={provinceId}
-            onChange={(e) => setProvinceId(e.target.value)}
-          >
-            <option value="">Select Province</option>
-            {provinces.map((p) => (
-              <option key={p.id} value={p.id}>{p.name}</option>
-            ))}
-          </select>
-        </div>
+        <Input type="date" label="Start Date" value={startDate} onChange={setStartDate} />
+        <Input type="date" label="Completed Date" value={completedDate} onChange={setCompletedDate} />
+        <Input label="Status" value={status} onChange={setStatus} />
 
-        {/** District */}
         <div>
-          <label className="text-white font-semibold mb-1 block">District</label>
-          <select
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
-            value={districtId}
-            onChange={(e) => setDistrictId(e.target.value)}
-            disabled={!provinceId}
-          >
-            <option value="">Select District</option>
-            {districts.map((d) => (
-              <option key={d.id} value={d.id}>{d.name}</option>
-            ))}
-          </select>
-        </div>
-
-        {/** Start Date */}
-        <div>
-          <label className="text-white font-semibold mb-1 block">Start Date</label>
-          <input
-            type="date"
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-        </div>
-
-        {/** Completed Date */}
-        <div>
-          <label className="text-white font-semibold mb-1 block">Completed Date</label>
-          <input
-            type="date"
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
-            value={completedDate}
-            onChange={(e) => setCompletedDate(e.target.value)}
-          />
-        </div>
-
-        {/** Status */}
-        <div>
-          <label className="text-white font-semibold mb-1 block">Status</label>
-          <input
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
-            placeholder="Enter project status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          />
-        </div>
-
-        {/** Description */}
-        <div>
-          <label className="text-white font-semibold mb-1 block">Description</label>
+          <label className="text-slate-700 font-semibold mb-1 block">Description</label>
           <textarea
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
+            className="border border-gray-300 p-3 w-full rounded bg-white text-slate-700"
             placeholder="Enter project description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
-        {/** Image */}
         <div>
-          <label className="text-white font-semibold mb-1 block">Image</label>
+          <label className="text-slate-700 font-semibold mb-1 block">Project Images (Multiple)</label>
           <input
             type="file"
             accept="image/*"
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
-            onChange={(e) => setImage(e.target.files?.[0] || null)}
+            multiple
+            className="border border-gray-300 p-3 w-full rounded bg-white text-slate-700"
+            onChange={handleImageChange}
           />
+          {/* Preview selected images */}
+          <div className="flex flex-wrap mt-2 gap-2">
+            {images.map((img, idx) => (
+              <img
+                key={idx}
+                src={URL.createObjectURL(img)}
+                alt="preview"
+                className="w-20 h-20 object-cover rounded border border-gray-300"
+              />
+            ))}
+          </div>
         </div>
 
-        {/** Video */}
         <div>
-          <label className="text-white font-semibold mb-1 block">Video</label>
+          <label className="text-slate-700 font-semibold mb-1 block">Video (Optional)</label>
           <input
             type="file"
             accept="video/*"
-            className="border border-gray-600 p-3 w-full rounded bg-black text-white"
+            className="border border-gray-300 p-3 w-full rounded bg-white text-slate-700"
             onChange={(e) => setVideo(e.target.files?.[0] || null)}
           />
         </div>
 
-        <button
-          type="submit"
-          className="bg-green-600 text-white w-full py-3 rounded hover:bg-green-700 transition"
-        >
+        <button type="submit" className="bg-blue-600 text-white w-full py-3 rounded-md hover:bg-blue-700 transition">
           Save Project
         </button>
       </form>
+    </div>
+  );
+}
+
+function Input({ label, value, onChange, type = "text" }: { label: string; value: string; onChange: (val: string) => void; type?: string }) {
+  return (
+    <div>
+      <label className="text-slate-700 font-semibold mb-1 block">{label}</label>
+      <input
+        type={type}
+        className="border border-gray-300 p-3 w-full rounded bg-white text-slate-700"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+}
+
+function Dropdown({ label, options, value, onChange, disabled = false }: { label: string; options: any[]; value: string; onChange: (val: string) => void; disabled?: boolean }) {
+  return (
+    <div>
+      <label className="text-slate-700 font-semibold mb-1 block">{label}</label>
+      <select
+        disabled={disabled}
+        className="border border-gray-300 p-3 w-full rounded bg-white text-slate-700"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        <option value="">Select {label}</option>
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
