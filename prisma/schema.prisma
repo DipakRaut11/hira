@@ -61,7 +61,7 @@ model Project {
   completedDate   DateTime?
   status          String
   description     String
-  image           String
+  image           String[]
   video           String?
   createdAt       DateTime @default(now())
 
