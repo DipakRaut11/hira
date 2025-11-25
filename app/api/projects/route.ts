@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     const status = formData.get("status") as string;
     const description = formData.get("description") as string;
 
-    const imageFile = formData.get("image") as File[] | null;
+    const imageFile = formData.getAll("images") as File[];
     const videoFile = formData.get("video") as File | null;
 
     if (!name || !client || !provinceId || !districtId || !startDateStr || !status || !description || !imageFile) {
