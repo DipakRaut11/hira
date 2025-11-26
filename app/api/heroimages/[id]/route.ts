@@ -6,19 +6,22 @@ import path from "path";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id?: string } }
+  { params }: { params: Promise<{ id?: string }> } // params is now a Promise
 ) {
   try {
     console.log("DELETE request received for url:", req.url);
-    console.log("params:", params);
+    
+    // Await the params Promise first
+    const resolvedParams = await params;
+    console.log("params:", resolvedParams);
 
-    if (!params?.id) {
+    if (!resolvedParams?.id) {
       console.error("Missing params.id");
       return NextResponse.json({ error: "Invalid image ID - missing param" }, { status: 400 });
     }
 
     // Ensure we decode any encoded parts and strip trailing/leading whitespace
-    const rawId = decodeURIComponent(params.id).trim();
+    const rawId = decodeURIComponent(resolvedParams.id).trim();
 
     // If id contains non-numeric things (like "1.jpg" or "1/"), try to extract
     const numericId = Number(rawId);
