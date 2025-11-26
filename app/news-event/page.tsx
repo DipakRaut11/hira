@@ -1,4 +1,4 @@
-import NewsEventList from "@/components/NewsEventList";
+import NewsEventList from "@/components/news-event/NewsEventList";
 
 export default function NewsPage() {
   return (
