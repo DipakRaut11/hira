@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function AdminCompanyInfoPage() {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(true);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     async function load() {
@@ -21,6 +22,13 @@ export default function AdminCompanyInfoPage() {
     load();
   }, []);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
+    }
+  }, [description]);
+
   async function handleSave() {
     try {
       await fetch("/api/companyInfo", {
@@ -28,32 +36,53 @@ export default function AdminCompanyInfoPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description }),
       });
-      alert("Saved!");
+      alert("Company information updated successfully!");
     } catch (err) {
-      alert("Failed to save");
+      alert("Failed to update. Try again.");
       console.error(err);
     }
   }
 
-  if (loading) return <p className="p-6">Loading...</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[50vh] text-gray-500">
+        Loading company info...
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h2 className="text-xl font-semibold mb-3">Edit Company Description</h2>
+    <div className="w-screen min-h-screen bg-white pt-[4.5rem] lg:pt-[6rem] px-4 lg:px-6">
+      <h1 className="text-3xl font-bold text-[#8B5E3C] mb-4 border-b border-[#C3A68A]/50 pb-2">
+        Company Information
+      </h1>
 
+      {/* Auto-resizing textarea */}
       <textarea
-        className="border p-3 rounded w-full h-40"
+        ref={textareaRef}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Enter company description..."
+        placeholder="Write about the company..."
+        className="w-full p-4 border-4 border-gray-400 rounded-lg resize-none text-gray-900
+          focus:outline-none focus:ring-2 focus:ring-[#8B5E3C]/60 focus:border-[#8B5E3C] overflow-hidden"
       />
 
-      <button
-        onClick={handleSave}
-        className="mt-4 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
-      >
-        Save
-      </button>
+      {/* Buttons */}
+      <div className="mt-4 flex flex-col sm:flex-row gap-4">
+        <button
+          onClick={handleSave}
+          className="bg-[#8B5E3C] hover:bg-[#6E472C] text-white font-semibold px-6 py-3 rounded-lg transition-all"
+        >
+          Save Changes
+        </button>
+
+        <button
+          onClick={() => setDescription("")}
+          className="border border-gray-500 hover:bg-gray-100 px-6 py-3 rounded-lg text-gray-700 transition-all"
+        >
+          Reset
+        </button>
+      </div>
     </div>
   );
 }
