@@ -41,7 +41,7 @@ export default function AdminNewsPage() {
 
   async function handleDelete(id: number) {
     if (!confirm("Delete this news?")) return;
-    await fetch(`/api/news/${id}`, { method: "DELETE" });
+    await fetch(`/api/news-event/${id}`, { method: "DELETE" });
     setNewsList(newsList.filter((n) => n.id !== id));
   }
 
