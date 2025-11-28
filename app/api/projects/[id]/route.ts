@@ -95,7 +95,7 @@ export async function PUT(
       finalImageUrls = [...existingImages, ...newImageUrls];
     } else {
       // Only keep existing images that are specified
-      finalImageUrls = existingImages;
+        finalImageUrls = existingImages.length > 0 ? existingImages : project.image;
     }
 
     // Handle video
