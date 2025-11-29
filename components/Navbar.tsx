@@ -12,7 +12,7 @@ export function Navbar() {
     const checkAdminStatus = async () => {
       try {
         console.log('Fetching admin status...');
-        const response = await fetch('/api/auth/check');
+        const response = await fetch('/api/auth/check', { cache: "no-store" });
         console.log('Response status:', response.status);
         const data = await response.json();
         console.log('Admin status data:', data);
