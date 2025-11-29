@@ -14,21 +14,23 @@ export function AdminSidebar({ isOpen, toggleSidebar }: SidebarProps) {
     { href: '/admin/heroimages', label: 'Hero Images' },
     { href: '/admin/companyInfo', label: 'Company Info' },
     { href: '/admin/services', label: 'Services' },
-    { href: '/admin/usersmessages', label: 'Contact Messages' },
+    { href: '/admin/usersmessages', label: 'Inbox' },
     { href: '/admin/projects', label: 'Projects' },
     { href: '/admin/news-event', label: 'News & Events' },
   ];
 
   return (
     <>
-      {/* Toggle Button */}
-      <button
-        onClick={toggleSidebar}
-        className={`fixed top-24 z-50 bg-gray-800 text-white p-2 rounded hover:bg-gray-700 transition
-          ${isOpen ? 'left-64 md:left-64' : 'left-4 md:left-64'}`}
-      >
-        {isOpen ? '✖' : '☰'}
-      </button>
+     {/* Toggle Button */}
+<button
+  onClick={toggleSidebar}
+  className={`fixed top-24 left-0 z-50 bg-gray-800 text-white p-2 rounded hover:bg-gray-700 transition-all duration-300
+    ${isOpen ? 'translate-x-64' : 'translate-x-0'}`}
+>
+  {isOpen ? '✖' : '☰'}
+</button>
+
+
 
       {/* Sidebar */}
       <aside
