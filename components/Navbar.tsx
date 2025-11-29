@@ -87,31 +87,24 @@ export function Navbar() {
       </nav>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden fixed top-16 left-0 w-full bg-white shadow-lg z-40 flex flex-col space-y-0 py-4">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-gray-800 font-medium py-3 px-6 transition-all hover:bg-[#8B5E3C] hover:text-white border-b border-gray-100"
-              onClick={() => setIsOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      )}
+{isOpen && (
+  <div className="md:hidden fixed top-16 left-0 w-full bg-white/50 backdrop-blur-md shadow-lg z-40 flex flex-col space-y-0 py-4">
+    {links.map((link) => (
+      <Link
+        key={link.href}
+        href={link.href}
+        className="text-gray-800 font-medium py-3 px-6 transition-all hover:bg-[#8B5E3C]/80 hover:text-white border-b border-gray-100"
+        onClick={() => setIsOpen(false)}
+      >
+        {link.label}
+      </Link>
+    ))}
+  </div>
+)}
 
-      {/* Backdrop for mobile menu */}
-      {isOpen && (
-        <div 
-          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
+    
       {/* Spacer to match navbar height */}
-      <div className="h-16 md:h-24" />
+      <div className="h-16 md:h-19" />
     </>
   );
 }
