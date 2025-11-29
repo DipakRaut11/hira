@@ -7,6 +7,11 @@ export async function GET(request: NextRequest) {
   const ip = forwarded ? forwarded.split(",")[0].trim() : request.headers.get("x-real-ip") ?? "";
   
   const isAdmin = allowedIPs.includes(ip);
-  
-  return NextResponse.json({ isAdmin });
+
+  return new NextResponse(JSON.stringify({ isAdmin }), {
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store", 
+    },
+  });
 }
