@@ -30,7 +30,8 @@ export function Navbar() {
 
   const links = [
     { href: '/', label: 'Home' },
-    { href: '/about-us', label: 'About Us' },
+    { href: '/#about', label: 'About Us', scroll: true },
+     { href: '/#service', label: 'Our Services', scroll: true },
     { href: '/our-projects', label: 'Our Projects' },
     { href: '/contact-us', label: 'Contact Us' },
     { href: '/news-event', label: 'News & Events' },
@@ -101,8 +102,6 @@ export function Navbar() {
     ))}
   </div>
 )}
-
-    
       {/* Spacer to match navbar height */}
       <div className="h-16 md:h-19" />
     </>
