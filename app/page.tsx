@@ -8,9 +8,14 @@ export default function Home() {
   return (
     <main className="flex flex-col">
       <HeroImageCarousel />
-         <AboutSection /> 
-         <ServiceList />
+            <div id="about">
+        <AboutSection />
+      </div>  
+        
 
+        <div id="service">
+        <ServiceList />
+        </div>
 
     </main>
   );
